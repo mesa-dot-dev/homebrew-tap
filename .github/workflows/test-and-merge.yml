@@ -1,0 +1,90 @@
+name: Test and Merge Staged Formulas
+
+on:
+  push:
+    branches:
+      - staged
+
+concurrency:
+  group: staged-formulas
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      formulas: ${{ steps.names.outputs.formulas }}
+      any_changed: ${{ steps.changed.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect changed formulas
+        id: changed
+        uses: tj-actions/changed-files@v46
+        with:
+          files: 'Formula/*.rb'
+
+      - name: Build formula matrix
+        id: names
+        if: steps.changed.outputs.any_changed == 'true'
+        run: |
+          formulas=$(echo '${{ steps.changed.outputs.all_changed_files }}' \
+            | tr ' ' '\n' \
+            | sed 's|Formula/||;s|\.rb$||' \
+            | jq -Rsc 'split("\n") | map(select(. != ""))')
+          echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
+          echo "Changed formulas: $formulas"
+
+  test:
+    needs: detect
+    if: needs.detect.outputs.any_changed == 'true'
+    runs-on: macos-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        formula: ${{ fromJson(needs.detect.outputs.formulas) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link tap to Homebrew
+        run: |
+          TAP_PATH="$(brew --repository)/Library/Taps/mesa-dot-dev/homebrew-tap"
+          mkdir -p "$(dirname "$TAP_PATH")"
+          ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
+
+      - name: brew audit --strict --new ${{ matrix.formula }}
+        run: brew audit --strict --new "mesa-dot-dev/tap/${{ matrix.formula }}"
+
+      - name: brew style ${{ matrix.formula }}
+        run: brew style Formula/${{ matrix.formula }}.rb
+
+      - name: brew install --build-from-source ${{ matrix.formula }}
+        run: brew install --build-from-source "mesa-dot-dev/tap/${{ matrix.formula }}"
+
+      - name: brew test ${{ matrix.formula }}
+        run: brew test "mesa-dot-dev/tap/${{ matrix.formula }}"
+
+  merge:
+    needs: [detect, test]
+    if: needs.detect.outputs.any_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge staged into main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git merge staged --no-edit
+          git push origin main
+
+      - name: Reset staged to main
+        run: git push origin main:staged --force
