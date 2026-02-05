@@ -1,7 +1,8 @@
 class GitFs < Formula
   desc "Mount Mesa, GitHub and GitLab repositories as local filesystems via FUSE"
   homepage "https://github.com/mesa-dot-dev/git-fs"
-  url "https://github.com/mesa-dot-dev/git-fs/releases/download/latest/git-fs-macos-universal.tar.gz"
+  version "0.0.0"
+  url "https://github.com/mesa-dot-dev/git-fs/releases/download/v0.0.0/git-fs-macos-universal.tar.gz"
   sha256 "PLACEHOLDER"
   license "MIT"
 
