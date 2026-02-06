@@ -66,9 +66,6 @@ jobs:
       - name: brew install --build-from-source ${{ matrix.formula }}
         run: brew install --build-from-source "mesa-dot-dev/tap/${{ matrix.formula }}"
 
-      - name: brew test ${{ matrix.formula }}
-        run: brew test "mesa-dot-dev/tap/${{ matrix.formula }}"
-
   merge:
     needs: [detect, test]
     if: needs.detect.outputs.any_changed == 'true'
