@@ -17,28 +17,26 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       formulas: ${{ steps.names.outputs.formulas }}
-      any_changed: ${{ steps.changed.outputs.any_changed }}
+      any_changed: ${{ steps.names.outputs.any_changed }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Detect changed formulas
-        id: changed
-        uses: tj-actions/changed-files@v46
-        with:
-          files: 'Formula/*.rb'
-
-      - name: Build formula matrix
         id: names
-        if: steps.changed.outputs.any_changed == 'true'
         run: |
-          formulas=$(echo '${{ steps.changed.outputs.all_changed_files }}' \
-            | tr ' ' '\n' \
-            | sed 's|Formula/||;s|\.rb$||' \
-            | jq -Rsc 'split("\n") | map(select(. != ""))')
-          echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
-          echo "Changed formulas: $formulas"
+          changed=$(git diff --name-only origin/main...HEAD -- 'Formula/*.rb')
+          if [ -z "$changed" ]; then
+            echo "any_changed=false" >> "$GITHUB_OUTPUT"
+          else
+            formulas=$(echo "$changed" \
+              | sed 's|Formula/||;s|\.rb$||' \
+              | jq -Rsc 'split("\n") | map(select(. != ""))')
+            echo "any_changed=true" >> "$GITHUB_OUTPUT"
+            echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
+            echo "Changed formulas: $formulas"
+          fi
 
   test:
     needs: detect
