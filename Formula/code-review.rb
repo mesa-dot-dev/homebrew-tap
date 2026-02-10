@@ -1,8 +1,8 @@
 class CodeReview < Formula
   desc "Mesa code review CLI"
   homepage "https://mesa.dev"
-  url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesa-code-review-v0.0.4/mesa-code-review-0.0.4.tgz"
-  sha256 "a4c9a877778ce99a23de11e093faf99bf948f8b6a2fa74f673f8fd82f68e56a2"
+  url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesa-code-review-v0.0.5/mesa-code-review-0.0.5.tgz"
+  sha256 "bb3448245ee5de3dffe5f8879555df234d3edb2a9253b80019359a11c2fb2f7e"
   license "Apache-2.0"
 
   depends_on "node"
