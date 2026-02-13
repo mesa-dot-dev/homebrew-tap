@@ -1,4 +1,4 @@
-class Depot < Formula
+class DepotAT014 < Formula
   desc "Mesa code review CLI"
   homepage "https://github.com/mesa-dot-dev/depot"
   url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesa-code-review-v0.1.4/mesa-code-review-0.1.4.tgz"
