@@ -55,13 +55,13 @@ jobs:
           mkdir -p "$(dirname "$TAP_PATH")"
           ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
 
-      - name: brew audit --strict ${{ matrix.formula }}
-        run: brew audit --strict "mesa-dot-dev/tap/${{ matrix.formula }}"
+      - name: audit brew
+        run: brew audit --strict --new "mesa-dot-dev/tap/${{ matrix.formula }}"
 
-      - name: brew style ${{ matrix.formula }}
+      - name: audit brew style
         run: brew style Formula/${{ matrix.formula }}.rb
 
-      - name: brew install --build-from-source ${{ matrix.formula }}
+      - name: confirm brew installation works
         run: brew install --build-from-source "mesa-dot-dev/tap/${{ matrix.formula }}"
 
   merge:
