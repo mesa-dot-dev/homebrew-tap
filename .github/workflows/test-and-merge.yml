@@ -55,8 +55,8 @@ jobs:
           mkdir -p "$(dirname "$TAP_PATH")"
           ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
 
-      - name: brew audit --strict --new ${{ matrix.formula }}
-        run: brew audit --strict --new "mesa-dot-dev/tap/${{ matrix.formula }}"
+      - name: brew audit --strict ${{ matrix.formula }}
+        run: brew audit --strict "mesa-dot-dev/tap/${{ matrix.formula }}"
 
       - name: brew style ${{ matrix.formula }}
         run: brew style Formula/${{ matrix.formula }}.rb
