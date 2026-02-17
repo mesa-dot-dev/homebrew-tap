@@ -1,8 +1,7 @@
-class GitfsAT013Alpha1 < Formula
+class GitFsAT013Alpha1 < Formula
   desc "Mount Mesa, GitHub and GitLab repositories as local filesystems via FUSE"
   homepage "https://github.com/mesa-dot-dev/gitfs"
   url "https://github.com/mesa-dot-dev/git-fs/releases/download/v0.1.3-alpha.1/git-fs-macos-universal.tar.gz"
-  version "0.1.3-alpha.1"
   sha256 "ff11c954af38bd7bea7e85ac24afb36f742a77039484200506ebebee365dc352"
   license "MIT"
 
