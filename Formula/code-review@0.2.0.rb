@@ -4,7 +4,6 @@ class CodeReviewAT020 < Formula
   url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesa-code-review-v0.2.0/mesa-code-review-0.2.0.tgz"
   sha256 "a40e768c844bc10d0f6f3a83d7400b5eb70fbb25d67e1549dd661a3e77beddb1"
   license "Apache-2.0"
-  version "0.2.0"
 
   depends_on "node"
 
