@@ -1,4 +1,4 @@
-class CodeReview < Formula
+class CodeReviewAT020 < Formula
   desc "Mesa code review CLI"
   homepage "https://mesa.dev"
   url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesa-code-review-v0.2.0/mesa-code-review-0.2.0.tgz"
