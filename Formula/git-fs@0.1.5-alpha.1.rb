@@ -1,4 +1,4 @@
-class MesafsAT015Alpha1 < Formula
+class GitFsAT015Alpha1 < Formula
   desc "Mount Mesa, GitHub and GitLab repositories as local filesystems via FUSE"
   homepage "https://github.com/mesa-dot-dev/mesafs"
   url "https://github.com/mesa-dot-dev/git-fs/releases/download/v0.1.5-alpha.1/git-fs-macos-universal.tar.gz"
