@@ -1,4 +1,4 @@
-class Mesafs < Formula
+class MesafsAT021Alpha1 < Formula
   desc "Mount Mesa repositories as local filesystems via FUSE"
   homepage "https://mesa.dev"
   url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesafs-v0.2.1-alpha.1/mesafs-macos-universal.tar.gz"
