@@ -1,9 +1,9 @@
 class MesafsNightly < Formula
   desc "Mount Mesa repositories as local filesystems via FUSE (nightly)"
   homepage "https://mesa.dev"
-  url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesafs-nightly-359ec07/mesafs-macos-universal.tar.gz"
-  version "nightly-359ec078f91a891adc8152cb12e0c4b676ac487b"
-  sha256 "979e4c4987be8cb60874dbe45946b5adc1ae39a2bcfc2a7dbeacc8bfcfdcb204"
+  url "https://github.com/mesa-dot-dev/homebrew-tap/releases/download/mesafs-nightly-02462d5/mesafs-macos-universal.tar.gz"
+  version "nightly-02462d5834a690e2eabf85ad2f1d914ae15b9b13"
+  sha256 "92a8a26a09395b3e01b3ffeb4ec021f13824c82845e9f39c733587a9062b6a29"
   license "MIT"
 
   depends_on :macos
