@@ -1,4 +1,4 @@
-class CodeReviewAT0_4_6 < Formula
+class CodeReviewAT046 < Formula
   desc "Mesa code review CLI"
   homepage "https://mesa.dev"
   version "0.4.6"
