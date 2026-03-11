@@ -1,4 +1,4 @@
-class Saguaro < Formula
+class SaguaroAT0415 < Formula
   desc "Saguaro code review CLI"
   homepage "https://mesa.dev"
   version "0.4.15"
