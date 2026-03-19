@@ -1,4 +1,4 @@
-class Saguaro < Formula
+class SaguaroAT0419 < Formula
   desc "AI code review CLI that enforces your team's rules"
   homepage "https://mesa.dev"
   version "0.4.19"
