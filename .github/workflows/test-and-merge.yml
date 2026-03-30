@@ -18,6 +18,7 @@ jobs:
     outputs:
       formulas: ${{ steps.names.outputs.formulas }}
       any_changed: ${{ steps.names.outputs.any_changed }}
+      any_to_test: ${{ steps.names.outputs.any_to_test }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,21 +27,28 @@ jobs:
       - name: Detect changed formulas
         id: names
         run: |
-          changed=$(git diff --diff-filter=d --name-only origin/main...HEAD -- 'Formula/*.rb')
-          if [ -z "$changed" ]; then
+          all_changed=$(git diff --name-only origin/main...HEAD -- 'Formula/*.rb')
+          if [ -z "$all_changed" ]; then
             echo "any_changed=false" >> "$GITHUB_OUTPUT"
+            echo "any_to_test=false" >> "$GITHUB_OUTPUT"
           else
-            formulas=$(echo "$changed" \
-              | sed 's|Formula/||;s|\.rb$||' \
-              | jq -Rsc 'split("\n") | map(select(. != ""))')
             echo "any_changed=true" >> "$GITHUB_OUTPUT"
-            echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
-            echo "Changed formulas: $formulas"
+            testable=$(git diff --diff-filter=d --name-only origin/main...HEAD -- 'Formula/*.rb')
+            if [ -z "$testable" ]; then
+              echo "any_to_test=false" >> "$GITHUB_OUTPUT"
+            else
+              formulas=$(echo "$testable" \
+                | sed 's|Formula/||;s|\.rb$||' \
+                | jq -Rsc 'split("\n") | map(select(. != ""))')
+              echo "any_to_test=true" >> "$GITHUB_OUTPUT"
+              echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
+              echo "Changed formulas: $formulas"
+            fi
           fi
 
   test:
     needs: detect
-    if: needs.detect.outputs.any_changed == 'true'
+    if: needs.detect.outputs.any_to_test == 'true'
     runs-on: macos-latest
     strategy:
       fail-fast: true
@@ -66,7 +74,7 @@ jobs:
 
   merge:
     needs: [detect, test]
-    if: needs.detect.outputs.any_changed == 'true'
+    if: ${{ always() && needs.detect.outputs.any_changed == 'true' && needs.test.result != 'failure' && needs.test.result != 'timed_out' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
