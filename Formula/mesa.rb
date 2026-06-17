@@ -1,8 +1,8 @@
 class Mesa < Formula
   desc "Mount Mesa repositories as local filesystems via FUSE"
   homepage "https://mesa.dev"
-  url "https://packages.buildkite.com/mesa-dot-dev/files-public/files/mesa-macos-arm64-0.36.0.tar.gz"
-  sha256 "1de7af0d2763cca70db4b3f727fcf06ff7223b63a04b1a1aae906f6aaba74a2f"
+  url "https://packages.buildkite.com/mesa-dot-dev/files-public/files/mesa-macos-arm64-0.37.0.tar.gz"
+  sha256 "7010631c6cf0958d878de7f8a9d4e2a893ecdd4c847a0cd9b78ebd3e39829c59"
   license "MIT"
 
   depends_on :macos
