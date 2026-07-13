@@ -28,7 +28,9 @@ jobs:
         run: brew style Casks/mesa.rb
 
       - name: confirm brew installation works
-        run: brew install --cask mesa-dot-dev/tap/mesa
+        run: |
+          brew trust mesa-dot-dev/tap
+          brew install --cask mesa-dot-dev/tap/mesa
 
   merge:
     needs: test
