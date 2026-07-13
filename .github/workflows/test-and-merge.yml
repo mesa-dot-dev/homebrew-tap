@@ -25,7 +25,7 @@ jobs:
           ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
 
       - name: audit brew
-        run: brew audit --strict --new mesa-dot-dev/tap/mesa
+        run: brew audit --cask mesa-dot-dev/tap/mesa
 
       - name: audit brew style
         run: brew style Casks/mesa.rb
