@@ -1,4 +1,4 @@
-name: Test and Merge Staged Formulas
+name: Test and Merge Staged Mesa Cask
 
 on:
   push:
@@ -6,54 +6,15 @@ on:
       - staged
 
 concurrency:
-  group: staged-formulas
+  group: staged-mesa-cask
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  detect:
-    runs-on: ubuntu-latest
-    outputs:
-      formulas: ${{ steps.names.outputs.formulas }}
-      any_changed: ${{ steps.names.outputs.any_changed }}
-      any_to_test: ${{ steps.names.outputs.any_to_test }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect changed formulas
-        id: names
-        run: |
-          all_changed=$(git diff --name-only origin/main...HEAD -- 'Formula/*.rb')
-          if [ -z "$all_changed" ]; then
-            echo "any_changed=false" >> "$GITHUB_OUTPUT"
-            echo "any_to_test=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "any_changed=true" >> "$GITHUB_OUTPUT"
-            testable=$(git diff --diff-filter=d --name-only origin/main...HEAD -- 'Formula/*.rb')
-            if [ -z "$testable" ]; then
-              echo "any_to_test=false" >> "$GITHUB_OUTPUT"
-            else
-              formulas=$(echo "$testable" \
-                | sed 's|Formula/||;s|\.rb$||' \
-                | jq -Rsc 'split("\n") | map(select(. != ""))')
-              echo "any_to_test=true" >> "$GITHUB_OUTPUT"
-              echo "formulas=$formulas" >> "$GITHUB_OUTPUT"
-              echo "Changed formulas: $formulas"
-            fi
-          fi
-
   test:
-    needs: detect
-    if: needs.detect.outputs.any_to_test == 'true'
     runs-on: macos-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        formula: ${{ fromJson(needs.detect.outputs.formulas) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -64,17 +25,16 @@ jobs:
           ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
 
       - name: audit brew
-        run: brew audit --strict --new "mesa-dot-dev/tap/${{ matrix.formula }}"
+        run: brew audit --strict --new mesa-dot-dev/tap/mesa
 
       - name: audit brew style
-        run: brew style Formula/${{ matrix.formula }}.rb
+        run: brew style Casks/mesa.rb
 
       - name: confirm brew installation works
-        run: brew install --build-from-source "mesa-dot-dev/tap/${{ matrix.formula }}"
+        run: brew install --cask mesa-dot-dev/tap/mesa
 
   merge:
-    needs: [detect, test]
-    if: ${{ always() && needs.detect.outputs.any_changed == 'true' && needs.test.result != 'failure' && needs.test.result != 'timed_out' }}
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
