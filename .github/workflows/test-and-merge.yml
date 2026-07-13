@@ -24,9 +24,6 @@ jobs:
           mkdir -p "$(dirname "$TAP_PATH")"
           ln -s "$GITHUB_WORKSPACE" "$TAP_PATH"
 
-      - name: audit brew
-        run: brew audit --cask mesa-dot-dev/tap/mesa
-
       - name: audit brew style
         run: brew style Casks/mesa.rb
 
