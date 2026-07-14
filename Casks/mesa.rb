@@ -1,8 +1,8 @@
 cask "mesa" do
-  version "0.40.0"
-  sha256 "ab7ec4a5949ad4974a4ed7bdaf7b26fba272dd6713bd1649c4819f7a6c3209b6"
+  version "0.41.0"
+  sha256 "d4427676bd2c5e6ef3df602dceb84d61c40c194dc65505369c7dc9f46340c52a"
 
-  url "https://packages.buildkite.com/mesa-dot-dev/files-public/files/mesa-macos-arm64-0.40.0.zip"
+  url "https://packages.buildkite.com/mesa-dot-dev/files-public/files/mesa-macos-arm64-0.41.0.zip"
   name "Mesa"
   desc "Mount Mesa repositories as local filesystems via FUSE"
   homepage "https://mesa.dev/"
